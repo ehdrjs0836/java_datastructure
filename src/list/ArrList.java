@@ -14,12 +14,11 @@ public class ArrList<E> {
       return size;
     }
     public E get(int k) {
-      if(size == 0){
-        throw new IndexOutOfBoundsException();
-      }
+//      if(size == 0 || k>= size){
+//        throw new IndexOutOfBoundsException();
+//      } 안넣어도 에러가 자동으로 발생
       return a[k];
     }
-
     public boolean add(E e) {
       if(a.length == size) {
 //        throw new ArrayIndexOutOfBoundsException();
@@ -29,18 +28,18 @@ public class ArrList<E> {
       return true;
     }
 
-  public void add(int index, E e) {
-    if(a.length == size) {
-      resize(a.length * 2);
+    public void add(int index, E e) {
+      if(a.length == size) {
+        resize(a.length * 2);
+      }
+      for (int i = size-1; i >= index; i--) {
+        a[i+1] = a[i];
+      }
+      a[index] = e;
+      size++;
     }
-    for (int i = size-1; i >= index; i--) {
-      a[i+1] = a[i];
-    }
-    a[index] = e;
-    size++;
-  }
 
-  public E remove() { //removeLast
+    public E remove() { //removeLast
       if(size == 0){
         throw new IndexOutOfBoundsException();
       }
@@ -49,6 +48,22 @@ public class ArrList<E> {
       size--;
       if(size > 0 && size == a.length/4) {
         resize(a.length / 2);
+      }
+      return tobeDeleted;
+    }
+
+    public E remove(int index) {
+      if(size == 0){
+        throw new IndexOutOfBoundsException();
+      }
+      E tobeDeleted = a[index];
+      a[index] = null;
+      for (int i = index+1; i <= size; i++) {
+        a[i-1] = a[i];
+      }
+      size--;
+      if (size > 0 && size == a.length/4) {
+        resize(a.length /2);
       }
       return tobeDeleted;
     }
